@@ -370,24 +370,15 @@ SEE ALSO
 * developer contact: <varnish-support@uplex.de>, and at the source
   repository site
 
-COPYRIGHT
-=========
-
-This document is licensed under the same conditions as the
-libvmod-backend_dyn project. See LICENSE for details.
-
-* Copyright (c) 2015 UPLEX Nils Goroll Systemoptimierung
 
 COPYRIGHT
 =========
 
 ::
 
-  Copyright (c) 2015 UPLEX Nils Goroll Systemoptimierung
-  All rights reserved
+  This document is licensed under the same conditions as the
+  libvmod-backend_dyn project. See LICENSE for details.
  
   Author: Geoffrey Simmons <geoffrey.simmons@uplex.de>
- 
-  See LICENCE
  
 
