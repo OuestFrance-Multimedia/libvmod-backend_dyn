@@ -322,28 +322,6 @@ INSTALLATION
 
 See `INSTALL.rst <INSTALL.rst>`_ in the source repository.
 
-For developers
---------------
-
-As with Varnish, you can use these ``configure`` options for developer
-builds:
-
-*  ``--enable-developer-warnings``
-
-   * Set stricter error and warning levels for compilation. The VMOD
-     MUST always build successfully with this option enabled.
-
-* ``--enable-debugging-symbols``
-
-   * Make the VMOD's symbols available to debuggers, core dumps and so forth.
-
-* ``--enable-stack-protector``
-
-   * Emit extra code to avoid buffer overflows
-
-See ``configure --help`` for a full list of configuration options and
-environment variables.
-
 AUTHOR
 ======
 
