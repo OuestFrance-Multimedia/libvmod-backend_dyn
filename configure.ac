@@ -35,9 +35,12 @@ AM_CONDITIONAL(HAVE_RST2MAN, [test "x$RST2MAN" != "xno"])
 
 # Checks for header files.
 AC_HEADER_STDC
-AC_CHECK_HEADER(sys/types.h)
-AC_CHECK_HEADER(sys/socket.h)
-AC_CHECK_HEADER(netdb.h)
+AC_CHECK_HEADER([sys/types.h])
+AC_CHECK_HEADER([sys/socket.h])
+AC_CHECK_HEADER([netdb.h])
+
+AC_FUNC_MALLOC
+AC_CHECK_FUNCS([memset])
 
 # backwards compat with older pkg-config
 # - pull in AC_DEFUN from pkg.m4
