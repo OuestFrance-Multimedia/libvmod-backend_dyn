@@ -14,7 +14,6 @@ AC_LANG(C)
 
 AM_INIT_AUTOMAKE([foreign])
 
-AC_GNU_SOURCE
 AC_PROG_CC
 AC_PROG_CC_STDC
 if test "x$ac_cv_prog_cc_c99" = xno; then

@@ -26,6 +26,9 @@
  * SUCH DAMAGE.
  */
 
+/* for strdup(), pthread_rwlock_* and getaddrinfo-related declarations */
+#define _POSIX_C_SOURCE 200809L
+
 #include "config.h"
 
 #include <stdlib.h>
