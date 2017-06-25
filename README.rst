@@ -322,13 +322,6 @@ INSTALLATION
 
 See `INSTALL.rst <INSTALL.rst>`_ in the source repository.
 
-AUTHOR
-======
-
-* Geoffrey Simmons <geoff@uplex.de>
-
-UPLEX Nils Goroll Systemoptimierung
-
 LIMITATIONS
 ===========
 
