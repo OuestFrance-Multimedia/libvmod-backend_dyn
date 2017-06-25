@@ -101,7 +101,7 @@ logexpect l1 -wait
 
 # std.healthy() returns false for a non-existent VMOD
 varnish v1 -vcl {
-	import ${vmod_std};
+	import std;
 	import backend_dyn from "${vmod_topbuild}/src/.libs/libvmod_backend_dyn.so";
 	backend dummy { .host="${bad_ip}"; }
 

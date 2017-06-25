@@ -25,7 +25,7 @@ server s4 {
 
 varnish v1 -vcl {
 	import backend_dyn from "${vmod_topbuild}/src/.libs/libvmod_backend_dyn.so";
-	import ${vmod_directors};
+	import directors;
 
 	backend dummy { .host="${bad_ip}"; }
 

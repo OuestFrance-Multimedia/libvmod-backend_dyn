@@ -109,8 +109,8 @@ client c1 {
 } -run
 
 # Cannot call delete() with a director
-varnish v1 -errvcl "Symbol not found" {
-	import ${vmod_directors};
+varnish v1 -errvcl "Symbol type (instance) can not be used in expression." {
+	import directors;
 	import backend_dyn from "${vmod_topbuild}/src/.libs/libvmod_backend_dyn.so";
 	backend s1 { .host="${s1_addr}"; .port="${s1_port}"; }
 

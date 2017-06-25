@@ -33,7 +33,7 @@ client c1 {
 } -run
 
 varnish v1 -vcl {
-	import ${vmod_directors};
+	import directors;
 	import backend_dyn from "${vmod_topbuild}/src/.libs/libvmod_backend_dyn.so";
 
 	backend dummy { .host="${bad_ip}"; }
