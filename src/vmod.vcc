@@ -16,7 +16,7 @@ $Module backend_dyn 3 Varnish Module to dynamically create and delete backends
 			  [DURATION connect_timeout,]
 			  [DURATION first_byte_timeout,]
 			  [DURATION between_bytes_timeout,]
-			  [INT max_connections])
+			  [INT max_connections,] [INT proxy_header])
 
   BACKEND backend_dyn.by_name(STRING name)
 
@@ -72,7 +72,7 @@ Examples::
 			      host_header="www.mysite.com",
                               connect_timeout=1s, first_byte_timeout=2s,
                               between_bytes_timeout=3s,
-                              max_connections=100)) {
+                              max_connections=100, proxy_header=1)) {
           return(fail);
       }
 
@@ -110,7 +110,7 @@ $Function BOOL create(PRIV_VCL, STRING name, STRING host, STRING port="",
                       PROBE probe=0, STRING host_header="",
 		      DURATION connect_timeout=0, DURATION first_byte_timeout=0,
                       DURATION between_bytes_timeout=0,
-                      INT max_connections=0)
+                      INT max_connections=0, INT proxy_header=0)
 
 Create a backend with the given configuration. The parameters
 correspond to the configuration fields of a static backend
@@ -173,6 +173,10 @@ corresponding global parameter is used (``-p connect_timeout``, etc.).
 
 ``max_connections`` MUST be an integer. By default, there is no upper
 bound for the connections to a backend.
+
+``proxy_header`` MUST be 0, 1 or 2. If 1 or 2, then that version of
+the PROXY protocol is used with the backend; if 0, then the PROXY
+protocol is not used. Default is 0.
 
 Examples::
 

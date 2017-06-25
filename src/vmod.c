@@ -145,7 +145,7 @@ vmod_create(VRT_CTX, struct vmod_priv *priv, VCL_STRING vcl_name,
 	    VCL_STRING host, VCL_STRING port, VCL_PROBE probe,
 	    VCL_STRING host_header, VCL_DURATION connect_timeout,
 	    VCL_DURATION first_byte_timeout, VCL_DURATION between_bytes_timeout,
-	    VCL_INT max_connections)
+	    VCL_INT max_connections, VCL_INT proxy_header)
 {
 	struct belist *belist;
 	struct bentry *bentry;
@@ -168,6 +168,11 @@ vmod_create(VRT_CTX, struct vmod_priv *priv, VCL_STRING vcl_name,
 	}
 	if (host[0] == '\0') {
 		errmsg(ctx, "vmod backend_dyn error: host must be non-empty");
+		return 0;
+	}
+	if (proxy_header < 0 || proxy_header > 2) {
+		errmsg(ctx, "vmod backend_dyn error: proxy_header must be 0, 1"
+		       "or 2");
 		return 0;
 	}
 	if (hosthdr[0] == '\0')

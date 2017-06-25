@@ -31,7 +31,7 @@ import backend_dyn [from "path"] ;
 			  [DURATION connect_timeout,]
 			  [DURATION first_byte_timeout,]
 			  [DURATION between_bytes_timeout,]
-			  [INT max_connections])
+			  [INT max_connections,] [INT proxy_header])
 
   BACKEND backend_dyn.by_name(STRING name)
 
@@ -87,7 +87,7 @@ Examples::
 			      host_header="www.mysite.com",
                               connect_timeout=1s, first_byte_timeout=2s,
                               between_bytes_timeout=3s,
-                              max_connections=100)) {
+                              max_connections=100, proxy_header=1)) {
           return(fail);
       }
 
@@ -124,18 +124,19 @@ Examples::
 CONTENTS
 ========
 
+* BOOL create(PRIV_VCL, STRING, STRING, STRING, PROBE, STRING, DURATION, DURATION, DURATION, INT, INT)
 * BACKEND by_name(PRIV_VCL, STRING)
-* BOOL create(PRIV_VCL, STRING, STRING, STRING, PROBE, STRING, DURATION, DURATION, DURATION, INT)
 * BOOL delete(PRIV_VCL, BACKEND)
 * STRING version()
 
 .. _func_create:
 
-BOOL create(PRIV_VCL, STRING, STRING, STRING, PROBE, STRING, DURATION, DURATION, DURATION, INT)
------------------------------------------------------------------------------------------------
+create
+------
 
-Prototype
-	BOOL create(PRIV_VCL, STRING name, STRING host, STRING port, PROBE probe, STRING host_header, DURATION connect_timeout, DURATION first_byte_timeout, DURATION between_bytes_timeout, INT max_connections)
+::
+
+	BOOL create(PRIV_VCL, STRING name, STRING host, STRING port="", PROBE probe=0, STRING host_header="", DURATION connect_timeout=0, DURATION first_byte_timeout=0, DURATION between_bytes_timeout=0, INT max_connections=0, INT proxy_header=0)
 
 Create a backend with the given configuration. The parameters
 correspond to the configuration fields of a static backend
@@ -199,6 +200,10 @@ corresponding global parameter is used (``-p connect_timeout``, etc.).
 ``max_connections`` MUST be an integer. By default, there is no upper
 bound for the connections to a backend.
 
+``proxy_header`` MUST be 0, 1 or 2. If 1 or 2, then that version of
+the PROXY protocol is used with the backend; if 0, then the PROXY
+protocol is not used. Default is 0.
+
 Examples::
 
 	if (!backend_dyn.create(name="be", host="myhost.com")) {
@@ -213,10 +218,11 @@ Examples::
 
 .. _func_by_name:
 
-BACKEND by_name(PRIV_VCL, STRING)
----------------------------------
+by_name
+-------
 
-Prototype
+::
+
 	BACKEND by_name(PRIV_VCL, STRING name)
 
 Return the backend created by the VMOD with the given name in the
@@ -243,10 +249,11 @@ Examples::
 
 .. _func_delete:
 
-BOOL delete(PRIV_VCL, BACKEND)
-------------------------------
+delete
+------
 
-Prototype
+::
+
 	BOOL delete(PRIV_VCL, BACKEND be)
 
 Delete the backend created by the VMOD with the given name in the
@@ -284,10 +291,11 @@ Examples::
 
 .. _func_version:
 
-STRING version()
-----------------
+version
+-------
 
-Prototype
+::
+
 	STRING version()
 
 Returns the version string for this vmod.
@@ -369,3 +377,17 @@ This document is licensed under the same conditions as the
 libvmod-backend_dyn project. See LICENSE for details.
 
 * Copyright (c) 2015 UPLEX Nils Goroll Systemoptimierung
+
+COPYRIGHT
+=========
+
+::
+
+  Copyright (c) 2015 UPLEX Nils Goroll Systemoptimierung
+  All rights reserved
+ 
+  Author: Geoffrey Simmons <geoffrey.simmons@uplex.de>
+ 
+  See LICENCE
+ 
+
