@@ -320,33 +320,7 @@ This VMOD requires Varnish 4.1.0.
 INSTALLATION
 ============
 
-The VMOD is built against a Varnish installation, and the autotools
-use ``pkg-config(1)`` to locate the necessary header files and other
-resources. This sequence will install the VMOD::
-
-  > ./autogen.sh	# for builds from the git repo
-  > ./configure
-  > make
-  > make check		# to run unit tests in src/tests/*.vtc
-  > make distcheck	# run check and prepare a distribution tarball
-  > sudo make install
-
-If you have installed Varnish in a non-standard directory, call
-``autogen.sh`` and ``configure`` with the ``PKG_CONFIG_PATH``
-environment variable pointing to the appropriate path. For example,
-when varnishd configure was called with ``--prefix=$PREFIX``, use::
-
-  > PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig
-  > export PKG_CONFIG_PATH
-
-By default, the vmod ``configure`` script installs the vmod in
-the same directory as Varnish, determined via ``pkg-config(1)``. The
-vmod installation directory can be overridden by passing the
-``VMOD_DIR`` variable to ``configure``.
-
-Other files such as this man-page are installed in the locations
-determined by ``configure``, which inherits its default ``--prefix``
-setting from Varnish.
+See `INSTALL.rst <INSTALL.rst>`_ in the source repository.
 
 For developers
 --------------
@@ -413,6 +387,9 @@ SEE ALSO
 * varnishd(1)
 * vcl(7)
 * `"Writing a Director" <https://www.varnish-cache.org/docs/4.1/reference/directors.html/>`_
+* source repository: https://code.uplex.de/uplex-varnish/libvmod-backend_dyn
+* developer contact: <varnish-support@uplex.de>, and at the source
+  repository site
 
 COPYRIGHT
 =========
