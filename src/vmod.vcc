@@ -112,71 +112,67 @@ $Function BOOL create(PRIV_VCL, STRING name, STRING host, STRING port="",
                       DURATION between_bytes_timeout=0,
                       INT max_connections=0)
 
-Description
-	Create a backend with the given configuration. The parameters
-	correspond to the configuration fields of a static backend
-	declaration. Further restrictions on required and optional
-	parameters are given below.
+Create a backend with the given configuration. The parameters
+correspond to the configuration fields of a static backend
+declaration. Further restrictions on required and optional parameters
+are given below.
 
-	``create()`` returns ``false`` if backend creation was
-	unsuccessful, ``true`` on success. After successful creation,
-	the backend appears in the output of the CLI command
-	``backend.list``, and statistics in the ``VBE.*`` namespace
-	appear in the output of ``varnishstat``. Its health can be set
-	with the CLI command ``backend.set_health``.
+``create()`` returns ``false`` if backend creation was unsuccessful,
+``true`` on success. After successful creation, the backend appears in
+the output of the CLI command ``backend.list``, and statistics in the
+``VBE.*`` namespace appear in the output of ``varnishstat``. Its
+health can be set with the CLI command ``backend.set_health``.
 
-	A backend created by the VMOD is "owned" by the VCL instance
-	in which it is created, and is not available in any other VCL
-	loaded by the Varnish process. The backend is deleted when its
-	VCL is discarded, and it enters the cooldown state when its
-	VCL is set to cold; in particular, no more health probes for
-	that backend are performed, if any were defined, when the
-	backend goes cold.
+A backend created by the VMOD is "owned" by the VCL instance in which
+it is created, and is not available in any other VCL loaded by the
+Varnish process. The backend is deleted when its VCL is discarded, and
+it enters the cooldown state when its VCL is set to cold; in
+particular, no more health probes for that backend are performed, if
+any were defined, when the backend goes cold.
 
-	The parameters may be specified as named parameters in any
-	order. If used without parameter names, they MUST appear
-	strictly in the order given in the function signature shown
-	above.
+The parameters may be specified as named parameters in any order. If
+used without parameter names, they MUST appear strictly in the order
+given in the function signature shown above.
 
 Required Parameters
-	The parameters ``name`` and ``host`` MUST be non-empty
-	strings.  ``name`` MUST contain only alphanumeric characters
-	or the underscore. It MAY NOT be a name already used for
-	another backend created by the VMOD in the current instance of
-	VCL, unless the backend with the duplicate name has been
-	deleted.
+-------------------
 
-	``host`` MUST be either an IP address (IPv4 or IPv6) or a host
-	name that can be resolved when ``create`` is called. A host
-	name may resolve to both an IPv4 and IPv6 address, but for
-	each address family, it MUST resolve to exactly one address.
+The parameters ``name`` and ``host`` MUST be non-empty strings.
+``name`` MUST contain only alphanumeric characters or the
+underscore. It MAY NOT be a name already used for another backend
+created by the VMOD in the current instance of VCL, unless the backend
+with the duplicate name has been deleted.
+
+``host`` MUST be either an IP address (IPv4 or IPv6) or a host name
+that can be resolved when ``create`` is called. A host name may
+resolve to both an IPv4 and IPv6 address, but for each address family,
+it MUST resolve to exactly one address.
 
 Optional Parameters
-	``port`` MUST be a numeric port number, or a TCP service name
-	listed in ``/etc/services``. The default is ``"80"``.
+-------------------
 
-	``probe`` MUST specify a probe defined in a static declaration
-	(or possibly a probe returned by another VMOD). If left
-	unspecified, the backend has no probe.
+``port`` MUST be a numeric port number, or a TCP service name listed
+in ``/etc/services``. The default is ``"80"``.
 
-	``host_header`` MUST be a non-empty legal value for the
-	``Host`` header, and is sent as the ``Host`` header in backend
-	requests. By default, the value of the ``host`` parameter is
-	used for ``Host``.
+``probe`` MUST specify a probe defined in a static declaration (or
+possibly a probe returned by another VMOD). If left unspecified, the
+backend has no probe.
 
-	Each of ``connect_timeout``, ``first_byte_timeout`` and
-	``between_bytes_timeout`` MUST be a VCL duration, such as
-	``0.5s``, ``1m``, etc. If a timeout is set for a specific
-	backend request (using ``bereq.connect_timeout``, etc.), then
-	that timeout overrides the setting in the backend
-	definition. If any of these parameters are left unspecified,
-	then the timeout "hierarchy" is followed as for standard
-	Varnish -- a ``bereq.*`` timeout is used if set, otherwise the
-	corresponding global parameter is used (``-p
-	connect_timeout``, etc.).
+``host_header`` MUST be a non-empty legal value for the ``Host``
+header, and is sent as the ``Host`` header in backend requests. By
+default, the value of the ``host`` parameter is used for ``Host``.
 
-	``max_connections`` MUST be an integer. By default, there is
-	no upper bound for the connections to a backend.
+Each of ``connect_timeout``, ``first_byte_timeout`` and
+``between_bytes_timeout`` MUST be a VCL duration, such as ``0.5s``,
+``1m``, etc. If a timeout is set for a specific backend request (using
+``bereq.connect_timeout``, etc.), then that timeout overrides the
+setting in the backend definition. If any of these parameters are left
+unspecified, then the timeout "hierarchy" is followed as for standard
+Varnish -- a ``bereq.*`` timeout is used if set, otherwise the
+corresponding global parameter is used (``-p connect_timeout``, etc.).
+
+``max_connections`` MUST be an integer. By default, there is no upper
+bound for the connections to a backend.
 
 Examples::
 
@@ -192,23 +188,20 @@ Examples::
 
 $Function BACKEND by_name(PRIV_VCL, STRING name)
 
-Description
-	Return the backend created by the VMOD with the given name in
-	the current instance of VCL. ``name`` MUST be the name of a
-	backend previously created with ``create()`` in the current
-	VCL.
+Return the backend created by the VMOD with the given name in the
+current instance of VCL. ``name`` MUST be the name of a backend
+previously created with ``create()`` in the current VCL.
 
-	``by_name()`` cannot return a statically declared backend, a
-	backend deleted by ``delete()``, a backend owned by another
-	VCL, or a backend created by another VMOD.
+``by_name()`` cannot return a statically declared backend, a backend
+deleted by ``delete()``, a backend owned by another VCL, or a backend
+created by another VMOD.
 
-	The function returns ``NULL`` if no backend with the given
-	name exists (or has been deleted). If this happens when
-	setting the value of ``req.backend_hint`` or ``bereq.backend``,
-	the result is typically a 503 response with the FetchError
-	"No backend found".
+The function returns ``NULL`` if no backend with the given name exists
+(or has been deleted). If this happens when setting the value of
+``req.backend_hint`` or ``bereq.backend``, the result is typically a
+503 response with the FetchError "No backend found".
 
-	XXX: Document dir.add_backend(NULL)
+XXX: Document dir.add_backend(NULL)
 
 Examples::
 
@@ -219,36 +212,32 @@ Examples::
 
 $Function BOOL delete(PRIV_VCL, BACKEND be)
 
-Description
-	Delete the backend created by the VMOD with the given name in
-	the current instance of VCL. ``name`` MUST be the name of a
-	backend previously created with ``create()`` in the current
-	VCL.
+Delete the backend created by the VMOD with the given name in the
+current instance of VCL. ``name`` MUST be the name of a backend
+previously created with ``create()`` in the current VCL.
 
-	After deletion, a backend is considered unhealthy and hence is
-	no longer selected for new backend requests. It enters a
-	"cooldown" state of at least 60 seconds, during which it may
-	complete any requests that had already begun when it was
-	deleted.  Any current backend requests MUST be completed
-	during this time. The ``VBE.*`` statistics for the backend
-	continue to appear in the output of ``varnishstat`` during
-	cooldown, and ``MAIN.n_backend`` is not decremented until
-	cooldown elapses.
+After deletion, a backend is considered unhealthy and hence is o
+longer selected for new backend requests. It enters a "cooldown" state
+of at least 60 seconds, during which it may complete any requests that
+had already begun when it was deleted.  Any current backend requests
+MUST be completed during this time. The ``VBE.*`` statistics for the
+backend continue to appear in the output of ``varnishstat`` during
+cooldown, and ``MAIN.n_backend`` is not decremented until cooldown
+elapses.
 
-	The backend no longer appears in the output of
-	``backend.list`` after deletion, and its health cannot be set
-	by ``backend.set_health``. It is not returned by
-	``by_name()``, and cannot be used to set the value of
-	``req.backend_hint`` or ``bereq.backend``. If the backend had
-	been previously added to a director, it is no longer selected
-	by the director after deletion.
+The backend no longer appears in the output of ``backend.list`` after
+deletion, and its health cannot be set by ``backend.set_health``. It
+is not returned by ``by_name()``, and cannot be used to set the value
+of ``req.backend_hint`` or ``bereq.backend``. If the backend had been
+previously added to a director, it is no longer selected by the
+director after deletion.
 
-	``delete()`` cannot delete a statically declared backend, a
-	backend that has already been deleted, a backend owned by
-	another VCL, or a backend created by another VMOD.
+``delete()`` cannot delete a statically declared backend, a backend
+that has already been deleted, a backend owned by another VCL, or a
+backend created by another VMOD.
 
-	``delete()`` returns ``false`` if deletion was unsuccessful,
-	``true`` otherwise.
+``delete()`` returns ``false`` if deletion was unsuccessful, ``true``
+otherwise.
 
 Examples::
 
@@ -258,8 +247,7 @@ Examples::
 
 $Function STRING version()
 
-Description
-	Returns the version string for this vmod.
+Returns the version string for this vmod.
 
 Example::
 
