@@ -272,7 +272,7 @@ deleted. There is no error message.
 REQUIREMENTS
 ============
 
-This VMOD requires Varnish 4.1.0.
+This VMOD requires Varnish 4.1.4 or later.
 
 INSTALLATION
 ============
