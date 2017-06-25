@@ -7,12 +7,19 @@ DISTCHECK_CONFIGURE_FLAGS = \
 
 EXTRA_DIST = LICENSE
 
-doc_DATA = LICENSE vmod_backend_dyn.3 src/vmod_backend_dyn.man.rst
+doc_DATA = README.rst LICENSE COPYING vmod_backend_dyn.3 \
+	src/vmod_backend_dyn.man.rst
 
 dist_man_MANS = vmod_backend_dyn.3
 MAINTAINERCLEANFILES = $(dist_man_MANS)
 
-vmod_backend_dyn.3: src/vmod_backend_dyn.man.rst
+vmod_backend_dyn.3: README.rst
+
+README.rst: src/vmod_backend_dyn.man.rst
+	cp src/vmod_backend_dyn.man.rst README.rst
+
+src/vmod_backend_dyn.man.rst:
+	make -C src vmod_backend_dyn.man.rst
 
 %.1 %.2 %.3 %.4 %.5 %.6 %.7 %.8 %.9:
 if HAVE_RST2MAN
