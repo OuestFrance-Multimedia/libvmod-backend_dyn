@@ -11,6 +11,41 @@ $Module backend_dyn 3 Varnish Module to dynamically create and delete backends
 
 ::
 
+  BOOL backend_dyn.create(STRING name, STRING host, [STRING port,]
+			  [PROBE probe,] [STRING host_header,]
+			  [DURATION connect_timeout,]
+			  [DURATION first_byte_timeout,]
+			  [DURATION between_bytes_timeout,]
+			  [INT max_connections])
+
+  BACKEND backend_dyn.by_name(STRING name)
+
+  BOOL backend_dyn.delete(BACKEND be)
+
+  STRING backend_dyn.version()
+
+DESCRIPTION
+===========
+
+This Varnish module (VMOD) provides functions to create and delete
+backends at runtime. This means that backends can be created at any
+time while Varnish is running without reloading VCL, and that backends
+created by the VMOD can also be deleted by the VMOD at runtime.
+
+Backends created by the VMOD are the same as backends defined by
+static declarations with the ``backend`` keyword, and they have the
+same configuration parameters with the same default values. Once
+created, a backend can be added to a director or assigned as a value
+of ``req.backend_hint`` or ``bereq.backend``. Backends created by the
+VMOD are accessed by the finder method ``by_name``, using the name
+string assigned at creation.
+
+Once deleted, a backend is no longer in use by Varnish -- it is not
+selected by any director to which it may have been added, and is no
+longer returned by ``by_name``.
+
+Examples::
+
   import directors;
 
   probe p { .url = "/"; }
@@ -70,26 +105,6 @@ $Module backend_dyn 3 Varnish Module to dynamically create and delete backends
   sub vcl_backend_fetch {
       set bereq.backend = backend_dyn.by_name("be2");
   }
-
-DESCRIPTION
-===========
-
-This Varnish module (VMOD) provides functions to create and delete
-backends at runtime. This means that backends can be created at any
-time while Varnish is running without reloading VCL, and that backends
-created by the VMOD can also be deleted by the VMOD at runtime.
-
-Backends created by the VMOD are the same as backends defined by
-static declarations with the ``backend`` keyword, and they have the
-same configuration parameters with the same default values. Once
-created, a backend can be added to a director or assigned as a value
-of ``req.backend_hint`` or ``bereq.backend``. Backends created by the
-VMOD are accessed by the finder method ``by_name``, using the name
-string assigned at creation.
-
-Once deleted, a backend is no longer in use by Varnish -- it is not
-selected by any director to which it may have been added, and is no
-longer returned by ``by_name``.
 
 $Function BOOL create(PRIV_VCL, STRING name, STRING host, STRING port="",
                       PROBE probe=0, STRING host_header="",
