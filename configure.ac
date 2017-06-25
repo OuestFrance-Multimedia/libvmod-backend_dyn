@@ -1,6 +1,6 @@
 AC_PREREQ(2.59)
 AC_COPYRIGHT([Copyright (c) 2015 UPLEX Nils Goroll Systemoptimierung])
-AC_INIT([VMOD backend_dyn], [trunk], [varnish-support@uplex.de],
+AC_INIT([VMOD backend_dyn], [0.2], [varnish-support@uplex.de],
         [libvmod-backend_dyn],
 	[https://code.uplex.de/uplex-varnish/libvmod-gcrypt])
 AC_CONFIG_MACRO_DIR([m4])
@@ -59,7 +59,7 @@ AS_VAR_IF([$1], [""], [$5], [$4])dnl
 ])# PKG_CHECK_VAR
 ])
 
-PKG_CHECK_MODULES([libvarnishapi], [varnishapi])
+PKG_CHECK_MODULES([libvarnishapi], [varnishapi >= 4.1.0 varnishapi <= 4.1.3])
 PKG_CHECK_VAR([LIBVARNISHAPI_PREFIX], [varnishapi], [prefix])
 PKG_CHECK_VAR([LIBVARNISHAPI_DATAROOTDIR], [varnishapi], [datarootdir])
 PKG_CHECK_VAR([LIBVARNISHAPI_BINDIR], [varnishapi], [bindir])

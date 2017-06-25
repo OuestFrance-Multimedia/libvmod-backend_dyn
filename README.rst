@@ -315,7 +315,7 @@ deleted. There is no error message.
 REQUIREMENTS
 ============
 
-This VMOD requires Varnish 4.1.0.
+This VMOD requires Varnish version 4.1.0 through 4.1.3.
 
 INSTALLATION
 ============
