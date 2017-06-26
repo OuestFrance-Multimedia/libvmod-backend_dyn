@@ -323,7 +323,9 @@ deleted. There is no error message.
 REQUIREMENTS
 ============
 
-This VMOD requires Varnish 5.0.0 or later.
+This VMOD requires Varnish 6.0, to be released in September 2017 (or
+the current trunk). See the source repository for versions of the VMOD
+that are compatible with other versions of Varnish.
 
 INSTALLATION
 ============
