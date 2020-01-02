@@ -62,6 +62,6 @@ varnish v1 -vcl {
 }
 
 client c1 {
-	txreq -url "/barf"
+	txreq -url "/barf" -proto HTTP/1.0
 	rxresp
 } -run
