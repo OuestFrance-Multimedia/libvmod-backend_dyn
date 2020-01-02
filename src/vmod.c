@@ -153,7 +153,7 @@ vmod_create(VRT_CTX, struct vmod_priv *priv, VCL_STRING vcl_name,
 	struct suckaddr *sa4 = NULL, *sa6 = NULL;
 	char ipv4_addr[IPBUFSIZ] = "", ipv6_addr[IPBUFSIZ] = "";
 	const char *hosthdr = host_header;
-        const char *path = NULL; 
+	const char *path = NULL;
 
 	CHECK_OBJ_NOTNULL(ctx, VRT_CTX_MAGIC);
 	AN(priv);
