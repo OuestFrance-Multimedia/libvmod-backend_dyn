@@ -109,15 +109,15 @@ client c1 {
 } -run
 
 # Cannot call delete() with a director
-varnish v1 -errvcl "Symbol type (instance) can not be used in expression." {
+varnish v1 -errvcl "Expression has type INSTANCE, expected BACKEND" {
 	import directors;
 	import backend_dyn from "${vmod_topbuild}/src/.libs/libvmod_backend_dyn.so";
 	backend s1 { .host="${s1_addr}"; .port="${s1_port}"; }
 
-        sub vcl_init {
-                new bar = directors.random();
-                bar.add_backend(s1, 1);
-        }
+	sub vcl_init {
+		new bar = directors.random();
+		bar.add_backend(s1, 1);
+	}
 
 	sub vcl_recv {
 		if (req.method == "DELETE") {
